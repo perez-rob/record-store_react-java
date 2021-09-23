@@ -1,11 +1,12 @@
-import { Box, ChakraProvider, theme } from '@chakra-ui/react';
+import { ChakraProvider, theme } from '@chakra-ui/react';
 import React from 'react';
 import './index.css';
+import { Header } from 'components';    // THIS IS NEW
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box></Box>
+      <Header />          {/* THIS IS CHANGED */}
     </ChakraProvider>
   );
 }
