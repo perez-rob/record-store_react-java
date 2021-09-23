@@ -1,23 +1,37 @@
+import { Text } from '@chakra-ui/react';
 import api from "api";
-import { useQuery } from 'react-query';
-import { Table } from 'components/records';   // THIS IS NEW
-import { Text } from '@chakra-ui/react';      // THIS IS CHANGED
-
+import { Table, Form } from 'components/records'; 
+import { useQuery, useQueryClient, useMutation } from 'react-query';  // THIS HAS CHANGED
 
 const fetchRecords = async () => await api.index();
 
 function Records() {
   const { status, data, error } = useQuery('records', fetchRecords);
 
-switch (status) {
+  const queryClient = useQueryClient();         // THIS IS NEW
+
+  const addRecord = useMutation(payload => api.create(payload));    // THIS IS NEW
+
+  // THIS HAS CHANGED - It used to just console log the event
+  const handleSubmit = event => {
+    event.preventDefault();
+    addRecord.mutate(Object.fromEntries(new FormData(event.target)), {
+      onSuccess: () => {
+        queryClient.invalidateQueries('records');
+      },
+    });
+  };
+
+  switch (status) {
     case 'loading':
       return <Text>Loading...</Text>;
     case 'error':
       return <Text color="tomato">{error.message}</Text>;
-    default:      // THIS WAS CHANGED to import the new Table component
+    default:
       return (
         <main className="container mx-auto">
           <Table records={data} />
+          <Form handler={handleSubmit} />
         </main>
       );
   }

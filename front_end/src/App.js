@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'; // THIS IS NEW
 import { ReactQueryDevtools } from 'react-query/devtools';      // THIS IS NEW
 import './index.css';
 import { Header, Footer } from 'components';
-import { HomePage, Single } from 'pages';
+import { HomePage,  } from 'pages';
 
 const queryClient = new QueryClient();                          // THIS IS NEW
 
